@@ -1,5 +1,6 @@
-﻿#include <iostream>
+#include <iostream>
 #include <fstream>
+#include <string>
 
 using namespace std;
 
@@ -10,7 +11,7 @@ struct  node {
 
 	node* next = nullptr;
 	node() {}
-	node(int next_number, int length_next): next_num(next_number), len(length_next){}
+	node(int next_number, int length_next) : next_num(next_number), len(length_next) {}
 };
 
 struct tab {
@@ -47,11 +48,12 @@ struct tab {
 	}
 
 	void show() {
+		cout<<"\nLS: "<<"\n";
 		for (int i = 0; i < size; i++) {
-			cout << i+1 << ": ";
+			cout << i + 1 << ": ";
 			node* current = tab_vec[i];
 			while (current != nullptr) {
-				cout << current->next_num+1<<", "<<current->len << " -> ";
+				cout << current->next_num +1<< ", " << current->len << " -> ";
 				current = current->next;
 			}
 			cout << "null\n";
@@ -103,11 +105,12 @@ struct tab_LE {
 	}
 
 	void show() {
+		cout<<"\nLE: "<<"\n";
 		for (int i = 0; i < size; i++) {
 			cout << i + 1 << ": ";
 			node_2* current = tab_vec[i];
 			while (current != nullptr) {
-				cout << current->from<<", " << current->next_num + 1 << ", " << current->len << " -> ";
+				cout << current->from+1 << ", " << current->next_num + 1 << ", " << current->len << " -> ";
 				current = current->next;
 			}
 			cout << "null\n";
@@ -117,10 +120,10 @@ struct tab_LE {
 
 int main()
 {
-	int size=0;
+	int size = 0;
 	fstream czytaj;
 	czytaj.open("graf.txt");
-	
+
 	czytaj >> size;
 
 	int** M = new int* [size];
@@ -139,12 +142,10 @@ int main()
 	cout << "MS: " << "\n";
 	for (int i = 0; i < size; i++) {
 		for (int j = 0; j < size; j++) {
-			cout << M[i][j]<<"	";
+			cout << M[i][j] << "	";
 		}
 		cout << "\n";
 	}
-
-	cout << "LS: " << "\n";
 
 	tab LS(size);
 	for (int i = 0; i < size; i++) {
@@ -160,11 +161,11 @@ int main()
 	tab_LE LE(size);
 
 	for (int i = 0; i < size; i++) {
-		node* current = LS.tab_vec[i];
-		while (current!=nullptr) {
-			//cout << "!" << "\n";
-			LS.add(i, current->next_num, current->len);
-			current = current->next;
+		node* temp_le = LS.tab_vec[i];
+		
+		while (temp_le != nullptr) {
+			LE.add(temp_le->next_num, i, temp_le->len);
+			temp_le = temp_le->next;
 		}
 	}
 
